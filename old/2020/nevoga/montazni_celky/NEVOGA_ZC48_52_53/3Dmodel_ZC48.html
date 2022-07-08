@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<title>xViewer</title>
+        <link rel="stylesheet" href="http://www.ok.9e.cz/css/plasticbuttons.css">
+		<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+        
+        <script src="http://www.ok.9e.cz/Libs/gl-matrix.js"></script>
+        <script src="http://www.ok.9e.cz/Libs/webgl-utils.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-product-type.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-state.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-shaders.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-model-geometry.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-model-handle.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-binary-reader.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-triangulated-shape.debug.js"></script>
+        <script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-viewer.debug.js"></script>
+        <script src="http://www.ok.9e.cz/Libs/jquery.js"></script>
+	    
+        <style>
+            html, body {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+                right: auto;
+                font: bold 13px arial, helvetica, sans-serif;
+            }
+
+            canvas {
+                display: block;
+                border: none;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+                height: 100%;
+            }
+            #fps {
+                position: absolute;
+                right: 20px;
+                top: 20px;
+            }
+
+            #navigator {
+                position: absolute;
+                left: 20px;
+                top: 20px;
+                padding: 10px;
+                z-index: 2; 
+                background: white;
+            }
+            
+            div {
+                padding: 2px;
+            }
+        </style>
+
+	</head>
+	
+	
+	<body>
+
+
+        
+		<canvas id="xBIM-viewer"></canvas>
+        <script type="text/javascript">
+            var models = [];
+            var check = xViewer.check();
+            var viewer = null;
+            var pickedId = null;
+            if (check.noErrors) {
+                viewer = new xViewer("xBIM-viewer");
+                viewer.background = [215, 215, 215];
+                viewer.load("ZC48.wexbim");
+                viewer.start();
+                viewer.on("error", function (arg) {
+                    var container = viewer._canvas.parentNode;
+                    if (container) {
+                        //preppend error report
+                        container.innerHTML = "<pre style='color:red;'>" + arg.message + "</pre>" + container.innerHTML;
+                    }
+                });
+                viewer.on("pick", function(arg){
+                    var id = arg.id;
+                    viewer.setCameraTarget(id);
+                    if (viewer.getState(pickedId) == xState.HIGHLIGHTED) viewer.setState(xState.UNDEFINED, [pickedId]);
+                    pickedId = id;
+                    viewer.setState(xState.HIGHLIGHTED, [pickedId]);
+                    var span = document.getElementById("pickedId");
+                    if (span){
+                        span.innerHTML = id ? id : 'model';
+                    }
+                });
+                viewer.on("loaded", function(model) {
+                    models.push({id: model.id, name: model.tag, stopped: false});
+                    refreshModelsPanel();
+                });
+                viewer.on("fps", function(fps){
+                    var span = document.getElementById("fps");
+                    if (span){
+                        span.innerHTML = fps;
+                    }
+                });
+
+                $("#input").change(function () {
+                    if (!input.files) return;
+
+                    var file = this.files[0];
+                    if (!file) return;
+
+                    viewer.load(file, file.name);
+                    viewer.start();
+                });
+
+
+
+
+
+                function start(id) {
+                    viewer.start(id);
+                    var model = models.filter(function (m) { return m.id === id }).pop();
+                    model.stopped = false;
+                    refreshModelsPanel();
+                }
+            } else {
+                var msg = document.getElementById('errLog');
+                for (var i in check.errors) {
+                    var error = check.errors[i];
+                    msg.innerHTML += "<pre style='color: red;'>" + error + "</pre> <br />";
+                }
+            }
+        </script>
+        
+
+    </p>
+    
+	</body>
+	
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>    
+
+<html>
+	
+	<head>
+		<title>xViewer</title>
+        <link rel="stylesheet" href="css/plasticbuttons.css">
+		<meta http-equiv="content-type" content="text/html; charset=windows-1250">
+        
+        <script src="http://www.ok.9e.cz/Libs/gl-matrix.js"></script>
+        <script src="http://www.ok.9e.cz/Libs/webgl-utils.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-product-type.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-state.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-shaders.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-model-geometry.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-model-handle.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-binary-reader.debug.js"></script>
+		<script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-triangulated-shape.debug.js"></script>
+        <script type="text/javascript" src="http://www.ok.9e.cz/Viewer/xbim-viewer.debug.js"></script>
+        <script src="http://www.ok.9e.cz/Libs/jquery.js"></script>
+        <script src="http://www.ok.9e.cz/js/xbim-viewer.js"></script>
+	    
+        <style>
+            html, body {
+                height: 100%;
+                padding: 0;
+                margin: 0;
+                right: auto;
+                font: bold 13px arial, helvetica, sans-serif;
+            }
+
+            canvas {
+                display: block;
+                border: none;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+                height: 100%;
+            }
+            #fps {
+                position: absolute;
+                right: 20px;
+                top: 20px;
+            }
+
+            #navigator {
+                position: absolute;
+                left: 20px;
+                top: 20px;
+                padding: 10px;
+                z-index: 2; 
+                background: white;
+            }
+            
+            div {
+                padding: 2px;
+            }
+        </style>
+
+	</head>
+	
+	
+	<body>
+		<div style="color: [255,255,255]" id="fps">
+            FPS : <span id="fps"></span> 
+        </div>
+		<div id="navigator">
+
+            <div id="selectedId">
+				ID vybraného prvku : <span id = "pickedId" ></span>
+			</div>
+
+            <div id="default-views">
+                Základní pohledy (nevybírat prvek) :
+                <button class="small button" onclick="if (viewer) viewer.show('front');">Přední</button>
+                <button class="small button" onclick="if (viewer) viewer.show('back');">Zadní</button>
+                <button class="small button" onclick="if (viewer) viewer.show('top');">Horní</button>
+                <button class="small button" onclick="if (viewer) viewer.show('bottom');">Spodní</button>
+                <button class="small button" onclick="if (viewer) viewer.show('left');">Levý</button>
+                <button class="small button" onclick="if (viewer) viewer.show('right');">Pravý</button>
+            </div>
+            <div id="zoom-to">
+                Přiblížení na :
+                <button class="small button" onclick="if (viewer) viewer.zoomTo(pickedId)">Vybraný prvek</button>
+                <button class="small button" onclick="if (viewer) viewer.zoomTo()">Plné zobrazení</button>
+            </div>
+            <div id="hide">
+                Zobrazení vybraných :            
+                <button class="small button" onclick="if (viewer) viewer.resetStates(false)">Zobrazení vše</button>
+                <button class="small button" onclick="if (viewer) {
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCDISTRIBUTIONELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCDISTRIBUTIONFLOWELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFLOWCONTROLLER)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCELECTRICDISTRIBUTIONPOINT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCDISTRIBUTIONCONTROLELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCDISTRIBUTIONPORT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCENERGYCONVERSIONDEVICE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFLOWFITTING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFLOWMOVINGDEVICE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFLOWSEGMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFLOWSTORAGEDEVICE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFLOWTERMINAL)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFLOWTREATMENTDEVICE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCCHAMFEREDGEFEATURE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCDISCRETEACCESSORY)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFASTENER)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCMECHANICALFASTENER)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCROUNDEDEDGEFEATURE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALCURVECONNECTION)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALCURVEMEMBER)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALCURVEMEMBERVARYING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALLINEARACTION)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALLINEARACTIONVARYING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALPLANARACTION)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALPLANARACTIONVARYING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALPOINTACTION)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALPOINTCONNECTION)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALPOINTREACTION)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALSURFACECONNECTION)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALSURFACEMEMBER)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTRUCTURALSURFACEMEMBERVARYING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFOOTING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCPILE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCREINFORCINGBAR)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCREINFORCINGMESH)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCTENDON)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCTENDONANCHOR)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTAIRFLIGHT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCBUILDINGELEMENTPART)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCANNOTATION)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCBUILDINGSTOREY)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCGRID)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCOPENINGELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCPROJECTIONELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCBEAM)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCBUILDING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCBUILDINGELEMENTPROXY)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCCOLUMN)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCCOVERING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCCURTAINWALL)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCDOOR)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCELECTRICALELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCELEMENTASSEMBLY)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCEQUIPMENTELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCFURNISHINGELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCMEMBER)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCPLATE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCRAILING)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSITE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSPACE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCTRANSPORTELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCVIRTUALELEMENT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCRAMP)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCRAMPFLIGHT)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCROOF)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSLAB)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCSTAIR)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCWALL)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCWALLSTANDARDCASE)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCWINDOW)
+                                                      viewer.setState(xState.HIDDEN, xProductType.IFCPROXY)
+                                                      
+                                                      viewer.setState(xState.UNDEFINED, [pickedId])
+                    }">Skrýt vše mimo vybrané</button>
+                <button class="small button" onclick="if (viewer) viewer.setState(xState.HIDDEN, [pickedId])">Skrýt vybrané</button>
+            </div>
+  <!-- 
+            <div id="RenderingMode">
+                Rendering mode :
+                <button class="small button" onclick="if (viewer) viewer.renderingMode = RenderingMode.NORMAL;">NORMAL</button>
+                <button class="small button" onclick="if (viewer) viewer.renderingMode = RenderingMode.GRAYSCALE;">GRAYSCALE</button>
+                <button class="small button" onclick="if (viewer) viewer.renderingMode = RenderingMode.XRAY;">X-RAY</button>                
+                <button class="small button" onclick="if (viewer) viewer.renderingMode = RenderingMode.XRAY_ULTRA;">X-RAY_ultra</button>  
+                
+                <button class="small button" onclick="if (viewer) viewer.RenderingMode('NORMAL');">NORMAL</button>
+                <button class="small button" onclick="if (viewer) viewer.RenderingMode('GRAYSCALE');">GRAYSCALE</button>
+                <button class="small button" onclick="if (viewer) viewer.RenderingMode('XRAY');">X-RAY</button>                
+                <button class="small button" onclick="if (viewer) viewer.RenderingMode('XRAY_ULTRA');">X-RAY_ultra</button>                                          
+            </div>            
+ -->
+                        
+		</div>
+        
+		<canvas id="xBIM-viewer"></canvas>
+        <script type="text/javascript">
+            var models = [];
+            var check = xViewer.check();
+            var viewer = null;
+            var pickedId = null;
+            if (check.noErrors) {
+                viewer = new xViewer("xBIM-viewer");
+                viewer.background = [215, 215, 215];
+                viewer.load("Hala_FL1.wexbim");
+                viewer.start();
+                viewer.on("error", function (arg) {
+                    var container = viewer._canvas.parentNode;
+                    if (container) {
+                        //preppend error report
+                        container.innerHTML = "<pre style='color:red;'>" + arg.message + "</pre>" + container.innerHTML;
+                    }
+                });
+                viewer.on("pick", function(arg){
+                    var id = arg.id;
+                    viewer.setCameraTarget(id);
+                    if (viewer.getState(pickedId) == xState.HIGHLIGHTED) viewer.setState(xState.UNDEFINED, [pickedId]);
+                    pickedId = id;
+                    viewer.setState(xState.HIGHLIGHTED, [pickedId]);
+                    var span = document.getElementById("pickedId");
+                    if (span){
+                        span.innerHTML = id ? id : 'model';
+                    }
+                });
+                viewer.on("loaded", function(model) {
+                    models.push({id: model.id, name: model.tag, stopped: false});
+                    refreshModelsPanel();
+                });
+                viewer.on("fps", function(fps){
+                    var span = document.getElementById("fps");
+                    if (span){
+                        span.innerHTML = fps;
+                    }
+                });
+
+                $("#input").change(function () {
+                    if (!input.files) return;
+
+                    var file = this.files[0];
+                    if (!file) return;
+
+                    viewer.load(file, file.name);
+                    viewer.start();
+                });
+
+                function refreshModelsPanel() {
+                    var html = "";
+                    models.forEach(function(m) {
+                        html += "<div> " + m.name + "&nbsp;";
+                        html += "<button class='small button' onclick='unload(" + m.id + ")'> Unload </button>";
+                        if (m.stopped)
+                            html += " <button class='small button' onclick='start(" + m.id + ")'> Start </button> ";
+                        else
+                            html += " <button class='small button' onclick='stop(" + m.id + ")'> Stop </button> ";
+                        html += "</div>";
+                    });
+                    $("#models").html(html);
+                }
+                function unload(id) {
+                    viewer.unload(id);
+                    models = models.filter(function (m) { return m.id !== id });
+                    refreshModelsPanel();
+                }
+                function stop(id) {
+                    viewer.stop(id);
+                    var model = models.filter(function (m) { return m.id === id }).pop();
+                    model.stopped = true;
+                    refreshModelsPanel();
+                }
+
+                function start(id) {
+                    viewer.start(id);
+                    var model = models.filter(function (m) { return m.id === id }).pop();
+                    model.stopped = false;
+                    refreshModelsPanel();
+                }
+            } else {
+                var msg = document.getElementById('errLog');
+                for (var i in check.errors) {
+                    var error = check.errors[i];
+                    msg.innerHTML += "<pre style='color: red;'>" + error + "</pre> <br />";
+                }
+            }
+        </script>
+        
+
+    
+	</body>
+	
+</html>
