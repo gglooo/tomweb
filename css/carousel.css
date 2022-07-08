@@ -10,3 +10,21 @@
     margin: auto;
 }
 
+.carousel_container {
+    position: absolute;
+    left: 40%;
+    transform: translateY(-60%);
+    width: fit-content;
+    border-radius: 40px;
+    overflow: hidden;
+}
+
+.carousel-label {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 10px;
+}
+

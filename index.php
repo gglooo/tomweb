@@ -1,3 +1,7 @@
+<?php
+  require_once 'php/main.php';
+?>
+
 <!DOCTYPE html>
 <html lang="cs">
     <head>
@@ -19,7 +23,7 @@
                     <a href="index.php">Ing. Tomáš Karásek</a>
                 </div>  
                 <ul class="nav-links">
-                    <li><a href="#">Album ocelových konstrukcí</a></li>
+                    <li><a href="#models">Album ocelových konstrukcí</a></li>
                     <li><a href="#">O mně</a></li>
                 </ul>
 
@@ -42,18 +46,18 @@
                 <div class="contact">
                     <h2 class="contact_header">Kontakt</h2>
                     <div class="contact_item" id="phone">
-                        <img src="./img/icons/phone.png" height="40" width="40" alt="Telefon">
+                        <img src="./img/icons/phone.png" height="40" width="40" alt="Telefon" title="Telefonní číslo">
                         <p class="info" title="Telefonní číslo">+420 605 574 550</p>
                     </div>
                     <div class="contact_item" id="email">
-                        <img src="./img/icons/email.png" height="40" width="40" alt="Email">
+                        <img src="./img/icons/email.png" height="40" width="40" alt="Email" title="Email">
                         <p class="info" title="Email">tomas.karasek@atlas.cz</p>
                     </div>
                     <div class="contact_item" id="bank_account">
-                        <img src="./img/icons/wallet.png" height="40" width="40" alt="Číslo účtu">
+                        <img src="./img/icons/wallet.png" height="40" width="40" alt="Číslo účtu" title="Číslo účtu">
                         <p class="info" title="Číslo účtu">86-5774990207/0100</p>
                     </div>
-                    <div class="contact_item" id="bank_account">
+                    <div class="contact_item" id="bank_account" title="IČO">
                         <p class="header">IČO</p>
                         <p class="info" title="IČO">732 32 351</p>
                     </div>
@@ -63,34 +67,7 @@
 
         <div class="carousel_container">
             <div id="my_carousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#my_carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#my_carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#my_carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="./slide/Bombardier.jpg" class="d-block w-100" alt="..." width="1400" height="900">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="./slide/Kareta.jpg" class="d-block w-100" alt="..." width="1400" height="900">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Second slide label</h5>
-                            <p>Some representative placeholder content for the second slide.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <img src="./slide/Paletove_hospodarstvi.jpg" class="d-block w-100" alt="..." width="1400" height="900">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>Third slide label</h5>
-                            <p>Some representative placeholder content for the third slide.</p>
-                        </div>
-                    </div>
-                </div>
+                <?php populate_carousel(); ?>
                 <button class="carousel-control-prev" type="button" data-bs-target="#my_carousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden"></span>
@@ -100,6 +77,91 @@
                     <span class="visually-hidden"></span>
                 </button>
             </div>
+        </div>
+
+
+        <!-- Album of models -->
+        <div class="background" id="models">
+            <div class="model_container">
+                <h1 class="model_header">Album ocelových konstrukcí</h1>
+                <?php populate_models(); ?>
+                <div class="model_item" style="grid-row: 3; grid-column: 1;">
+                    <img src="./models/2018/kareta/Kareta_1.jpg" alt="Model 1">
+                    <div class="model_info">
+                        <h2>Kareta</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Morbi scelerisque luctus velit. Lorem ipsum dolor sit amet, 
+                            consectetur adipiscing elit.
+                        </p>
+                    </div>
+                </div>
+                <div class="model_item" style="grid-row: 3; grid-column: 2;">
+                    <img src="./models/2018/kareta/Kareta_1.jpg" alt="Model 1">
+                    <div class="model_info">
+                        <h2>Kareta</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Morbi scelerisque luctus velit. Lorem ipsum dolor sit amet, 
+                            consectetur adipiscing elit.
+                        </p>
+                    </div>
+                </div>
+                <div class="model_item" style="grid-row: 3; grid-column: 3;">
+                    <img src="./models/2018/kareta/Kareta_1.jpg" alt="Model 1">
+                    <div class="model_info">
+                        <h2>Kareta</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Morbi scelerisque luctus velit. Lorem ipsum dolor sit amet, 
+                            consectetur adipiscing elit.
+                        </p>
+                    </div>
+                </div>
+                <div class="model_item" style="grid-row: 4; grid-column: 1;">
+                    <img src="./models/2018/kareta/Kareta_1.jpg" alt="Model 1">
+                    <div class="model_info">
+                        <h2>Kareta</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Morbi scelerisque luctus velit. Lorem ipsum dolor sit amet, 
+                            consectetur adipiscing elit.
+                        </p>
+                    </div>
+                </div>
+                <div class="model_item" style="grid-row: 4; grid-column: 2;">
+                    <img src="./models/2018/kareta/Kareta_1.jpg" alt="Model 1">
+                    <div class="model_info">
+                        <h2>Kareta</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Morbi scelerisque luctus velit. Lorem ipsum dolor sit amet, 
+                            consectetur adipiscing elit.
+                        </p>
+                    </div>
+                </div>
+                <div class="model_item" style="grid-row: 4; grid-column: 3;">
+                    <img src="./models/2018/kareta/Kareta_1.jpg" alt="Model 1">
+                    <div class="model_info">
+                        <h2>Kareta</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Morbi scelerisque luctus velit. Lorem ipsum dolor sit amet, 
+                            consectetur adipiscing elit.
+                        </p>
+                    </div>
+                </div>
+                <div class="model_item" style="grid-row: 5; grid-column: 1;">
+                    <img src="./models/2018/kareta/Kareta_1.jpg" alt="Model 1">
+                    <div class="model_info">
+                        <h2>Kareta</h2>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            Morbi scelerisque luctus velit. Lorem ipsum dolor sit amet, 
+                            consectetur adipiscing elit.
+                        </p>
+                    </div>
+                </div>
         </div>
 
         <script src="js/navbar.js"></script>
