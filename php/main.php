@@ -85,9 +85,17 @@ function populate_models() {
             echo '</p>';
             echo '</div>';
             echo '<div class="model_buttons">';
-            echo '<a href="' . $sub_dir . '" class="button">Fotogalerie</a>';
-            echo '<a href="' . $sub_dir . '" class="button">3D model</a>';
-            echo '<a href="' . $sub_dir . '" class="button">Stáhnout</a>';
+            echo '<a href="./gallery.php?path=' . $sub_dir . '" class="button">Fotogalerie</a>';
+    
+            $wexbim = glob($sub_dir . '/*.wexbim', GLOB_BRACE);
+            if ($wexbim) {
+                echo '<a href="./viewer.php?model=' . $wexbim[0] . '" class="button">3D model</a>';
+            }
+
+            $ifc = glob($sub_dir . '/*.ifc', GLOB_BRACE);
+            if ($ifc) {
+                echo '<a href="' . $ifc[0] . '" class="button" download>Stáhnout</a>';
+            }
             echo '</div>';
             echo '</div>';
         }
@@ -99,4 +107,29 @@ function populate_models() {
 function get_meta_data( $image_path ) {
     $exif = exif_read_data($image_path, 0, true);
     return $exif['IFD0']['ImageDescription'];
+}
+
+
+function fill_photos() {
+    $path = $_GET['path'];
+    $files = glob($path . '/images/*.{jpg,png}', GLOB_BRACE);
+    $in_row = 0;
+    echo '<div class="row photos">';
+    foreach($files as $file) {
+        echo '<div class="col-sm-6 col-md-4 col-lg-3 item" style="padding-bottom: 15px; padding-top: 15px;"><a href="' . $file . '" data-lightbox="photos"><img class="img-fluid" src="' . $file . '" style="border-radius: 7px;"></a></div>';
+        // echo '<a href="' . $file . '"data-toggle="lightbox" data-gallery="example-gallery" class="col-sm-3">';
+        // echo '<img src="' . $file . '" class="img-fluid">';
+        // echo '</a>';
+        $in_row++;
+        
+        // if ($in_row % 4 == 0 || $in_row == count($files)) {
+        //     echo '</div>';
+        // }
+    }
+    echo '</div>';
+}
+
+function get_name() {
+    $info = get_model_info($_GET['path']);
+    echo '<h1 class="model_header" style="margin-top: 0px; padding-left: 15px;">' . $info[0] . '</h1>';
 }

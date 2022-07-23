@@ -1,0 +1,30 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    --color-primary: #FFFFFF;
+    --color-grey: #F5F5F5;
+}
+
+.container {
+    background-color: var(--color-grey);
+    width: auto;
+    height: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.photo_container {
+    margin-top: 45px;
+    background-color: #FFFFFF;
+    border-radius: 60px;
+    border: 1px solid #7070706b;
+    width: fit-content;
+    height: fit-content;
+    padding-bottom: 45px;
+    margin-bottom: 60px;
+    /* justify-content: center; */
+    /* grid-template-columns: 1fr 1fr 1fr; */
+    /* grid-auto-flow: column; */
+}

@@ -55,6 +55,16 @@
 }
 
 
+@media (max-width: 1435px) {
+    .content_container { flex-direction: column; justify-content: center; align-items: center;}
+}  
+
+@media screen and (max-width: 1600px) {
+    .carousel_container {
+      margin-left: 30px;
+    }
+  }
+
 /* #my_carousel {
     position: absolute;
     top:0;
